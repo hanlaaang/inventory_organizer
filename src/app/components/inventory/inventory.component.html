@@ -1,0 +1,6 @@
+<div>
+  @for (inventoryItem of inventoryItems$ | async; track inventoryItem.id) {
+    <app-inventory-item [inventoryItem]="inventoryItem"></app-inventory-item>
+  }
+</div>
+

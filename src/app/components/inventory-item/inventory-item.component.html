@@ -1,1 +1,10 @@
-<p>inventory-item works!</p>
+<div class="card w-96 bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">{{ inventoryItem?.name }}</h2>
+    <p>Verfügbare Anzahl:</p>
+    <span class="badge">{{ availableAmount }}/{{totalAmount}}</span>
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary">Ausleihen</button>
+    </div>
+  </div>
+</div>
