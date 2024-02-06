@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY } from 'rxjs';
+import {EMPTY, of} from 'rxjs';
 import { map, exhaustMap, catchError } from 'rxjs/operators';
 import {InventoryService} from "../services/inventory.service";
 
 @Injectable()
-export class MoviesEffects {
+export class InventoryEffects {
 
-  loadMovies$ = createEffect(() => this.actions$.pipe(
-      ofType('[Inventory Page] Load InventoryItems'),
+  loadInventory$ = createEffect(() => this.actions$.pipe(
+      ofType('[Inventory Page] Load Inventory Items'),
       exhaustMap(() => this.inventoryService.getAll()
         .pipe(
           map(inventoryItems => ({ type: '[Inventory API] InventoryItems Loaded Success', payload: inventoryItems })),
-          catchError(() => EMPTY)
+          catchError(() => of({ type: '[Inventory API] InventoryItems Loaded Error' }))
         ))
     )
   );
