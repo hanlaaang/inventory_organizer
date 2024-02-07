@@ -1,5 +1,11 @@
-import {createAction, props} from "@ngrx/store";
+import {createActionGroup, emptyProps, props} from "@ngrx/store";
+import {InventoryItem} from "../models/inventory.models";
 
-export const loadInventoryItems = createAction('[Inventory Page] Load Inventory Items');
-
-export const inventoryItemsLoadedError = createAction('[Inventory API] InventoryItems Loaded Error', props<{ error: string }>());
+export const InventoryActions = createActionGroup({
+  source: 'Inventory',
+  events: {
+    'Load Inventory Items': emptyProps(),
+    'Load Inventory Items Success': props<{ inventoryItems: InventoryItem[] }>(),
+    'Load Inventory Items Error': props<{ error: string }>()
+  }
+})

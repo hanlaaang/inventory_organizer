@@ -1,20 +1,18 @@
 import {createReducer, on} from "@ngrx/store";
-import {inventoryItemsLoadedError, loadInventoryItems} from "../actions/inventory.actions";
 import {InventoryState} from "../selectors/inventory.selectors";
+import {InventoryActions} from "../actions/inventory.actions";
 
 export const initialState: InventoryState = {
   inventoryItems: [],
-  error: null,
+  error: undefined,
 }
-
 
 export const inventoryReducer = createReducer(
   initialState,
-  on(loadInventoryItems, (state) => ({
-    ...state,
-  })),
-  on(inventoryItemsLoadedError, (state, action) => ({
-    ...state,
-    error: action.error,
-  }))
+  on(InventoryActions.loadInventoryItemsSuccess, (state, {inventoryItems}): InventoryState => (
+    { ...state, inventoryItems: inventoryItems, error: undefined })
+  ),
+  on(InventoryActions.loadInventoryItemsError, (state, {error}): InventoryState => (
+    { ...state, error: error })
+  )
 )

@@ -1,5 +1,5 @@
 <div>
-  @for (inventoryItem of inventoryItems$ | async; track inventoryItem.id) {
+  @for (inventoryItem of inventoryItems(); track inventoryItem.id) {
     <app-inventory-item [inventoryItem]="inventoryItem"></app-inventory-item>
   }
 </div>
