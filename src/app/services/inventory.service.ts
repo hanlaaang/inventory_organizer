@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {of} from "rxjs";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -8,10 +9,9 @@ export class InventoryService {
 
   constructor(private http: HttpClient) { }
 
-  public getAll() {
+  public getInventoryItems() {
     return of(this.mockInventory);
   }
-
 
   // create mock data for inventory items
   // use InventoryItem model

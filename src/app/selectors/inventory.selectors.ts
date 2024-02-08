@@ -1,5 +1,5 @@
 import {InventoryItem} from "../models/inventory.models";
-import {createSelector} from "@ngrx/store";
+import {createFeatureSelector, createSelector} from "@ngrx/store";
 
 export interface AppState {
   inventoryItems: InventoryState;
@@ -8,10 +8,14 @@ export interface AppState {
 
 export interface InventoryState {
   inventoryItems: InventoryItem[];
-  error: any;
+  error: string | undefined;
 }
 
-export const selectInventory = (state: AppState) => state.inventoryItems;
-export const selectInventoryItems = createSelector (selectInventory,(state) => state.inventoryItems);
+export const selectInventoryState = createFeatureSelector<InventoryState>('inventory');
 
-export const selectInventoryError = createSelector(selectInventory, (state) => state.error)
+export const selectAllInventoryItems = createSelector(
+  selectInventoryState,
+  state => (
+    state.inventoryItems
+  )
+)

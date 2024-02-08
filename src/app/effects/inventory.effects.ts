@@ -1,24 +1,26 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {EMPTY, of} from 'rxjs';
-import { map, exhaustMap, catchError } from 'rxjs/operators';
+import {Actions, createEffect, ofType} from "@ngrx/effects";
+import {inject} from "@angular/core";
+import {Store} from "@ngrx/store";
 import {InventoryService} from "../services/inventory.service";
+import {InventoryActions} from "../actions/inventory.actions";
+import {catchError, map, of, switchMap} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
 
-@Injectable()
-export class InventoryEffects {
-
-  loadInventory$ = createEffect(() => this.actions$.pipe(
-      ofType('[Inventory Page] Load Inventory Items'),
-      exhaustMap(() => this.inventoryService.getAll()
-        .pipe(
-          map(inventoryItems => ({ type: '[Inventory API] InventoryItems Loaded Success', payload: inventoryItems })),
-          catchError(() => of({ type: '[Inventory API] InventoryItems Loaded Error' }))
-        ))
+export const loadInventoryItems = createEffect(
+  (actions$ = inject(Actions), store = inject(Store), inventoryService = inject(InventoryService)) => {
+    return actions$.pipe(
+      ofType(InventoryActions.loadInventoryItems),
+      switchMap(() => {
+        return inventoryService.getInventoryItems().pipe(
+          map(data => InventoryActions.loadInventoryItemsSuccess({
+            inventoryItems: data
+          })),
+          catchError((error: HttpErrorResponse) =>
+            of(InventoryActions.loadInventoryItemsError({error: error.message}))
+          )
+        )
+      })
     )
-  );
-
-  constructor(
-    private actions$: Actions,
-    private inventoryService: InventoryService
-  ) {}
-}
+  },
+  {functional: true}
+)
